@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  worker:
+    build: .
+    command:  /app/workerbin
+    networks:
+       - tutorial
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - 6379:6379
+    networks:
+       - tutorial
+
+  asynqmon:
+    image: hibiken/asynqmon:latest
+    ports:
+      - 8080:8080
+    entrypoint: ["./asynqmon", "--redis-addr=redis:6379"]
+    networks:
+     - tutorial
+
+networks:
+  tutorial:
+  
